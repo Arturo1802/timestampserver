@@ -25,24 +25,30 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?",(req, res)=>{
+	var YeDaMo=req.params.date.split("-")
+	//undefined 
 	if(typeof req.params.date === 'undefined'){
-		var r=new Date();
-		x=r.getTime() 
-		res.json({unix:x,utc:r})
+		var r=new Date(YeDaMo[0],YeDaMo[1],YeDaMo[2]); 
+		x=r.getTime()  
+		res.json({unix:x,utc:r.toString()})
 	}
-	console.log(req.params.date)
+	//is unix
 	if(!isNaN(req.params.date)){ 
-	var r=new Date(req.params.date*1000);
-	var x=new Date(req.params.date*1000).getTime()
-	res.json({unix:x,utc:r})
+	var r=new Date(req.params.date*1000); 
+	var x=new Date(req.params.date*1000).getTime() 
+	res.json({unix:x,utc:r.toString()})
 	
 	}else{
+	//normal date
 	var regExp = /[a-zA-Z]/u;
 		if(!regExp.test(req.params.date)){
-			var ut=new Date(req.params.date)
-			var x=ut.getTime()
-			res.json({unix:x,utc:ut})
+			var ut=new Date(YeDaMo[0],YeDaMo[1],YeDaMo[2]); 
+			console.log(ut)
+			var x=ut.getTime() 
+			 
+			res.json({unix:x,utc:ut.toString()}) 
 		}else{
+		//Error
 			res.json({error:"Invalid Date" })
 		}
 	}
