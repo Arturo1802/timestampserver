@@ -24,6 +24,33 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/:date?",(req, res)=>{
+	if(typeof req.params.date === 'undefined'){
+		var r=new Date();
+		x=r.getTime() 
+		res.json({unix:x,utc:r})
+	}
+	console.log(req.params.date)
+	if(!isNaN(req.params.date)){ 
+	var r=new Date(req.params.date*1000);
+	var x=new Date(req.params.date*1000).getTime()
+	res.json({unix:x,utc:r})
+	
+	}else{
+	var regExp = /[a-zA-Z]/u;
+		if(!regExp.test(req.params.date)){
+			var ut=new Date(req.params.date)
+			var x=ut.getTime()
+			res.json({unix:x,utc:ut})
+		}else{
+			res.json({error:"Invalid Date" })
+		}
+	}
+	
+	 
+})
+
+
 
 
 // listen for requests :)
